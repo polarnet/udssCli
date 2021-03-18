@@ -5,9 +5,7 @@
 @inject SignInManager<ApplicationUser> SignInManager
 @inject UserManager<ApplicationUser> UserManager
 
-@{
-  var culture = Defines.UiCulture();
-}
+@{ var culture = Defines.UiCulture(); }
 
 <!DOCTYPE html>
 <html lang="en">
@@ -21,8 +19,8 @@
   <meta content="" name="keywords">
 
   <!-- Favicons -->
-  <link href="assets/img/favicon.png" rel="icon">
-  <link href="assets/img/apple-touch-icon.png" rel="apple-touch-icon">
+  <link href="~/assets/img/favicon.png" rel="icon">
+  <link href="~/assets/img/apple-touch-icon.png" rel="apple-touch-icon">
 
   <!-- Google Fonts -->
   <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Raleway:300,300i,400,400i,600,600i,700,700i" rel="stylesheet">
@@ -57,68 +55,71 @@
   </script>
 
 </head>
+
 <body>
-  <!-- ======= Header ======= -->
-  <header id="header" class="fixed-top">
-    <div class="container-fluid d-flex">
+<!-- ======= Header ======= -->
+<header id="header" class="fixed-top">
+  <div class="container-fluid d-flex">
 
-      <div class="logo mr-auto">
-        <h1 class="text-light"><a href="@Url.Action("Index", "Home")"><span>Union Distribution</span></a></h1>
-        <!-- Uncomment below if you prefer to use an image logo -->
-        <!-- <a href="index.html"><img src="assets/img/logo.png" alt="" class="img-fluid"></a>-->
-      </div>
-
-      <nav class="nav-menu d-none d-lg-block">
-        <ul>
-          <li class="active"><a href="@Url.Action("Index", "Home")">Home</a></li>
-          <li><a href="@Url.Action("AboutUs", "Home")">About Us</a></li>
-          <li><a href="@Url.Action("Contacts", "Home")">Contact Us</a></li>
-          <li><a href="@Url.Action("Index", "Services")">Services</a></li>
-          
-          <!-- user main -->
-          <li class="drop-down">
-            <a href="">Profile</a>
-            <ul>
-              @if (SignInManager.IsSignedIn(User))
-              {
-            <li><a href="#">Logout</a></li> }
-                  else
-                  {
-            <li><a asp-area="Identity" asp-page="/Account/Login">Login</a></li>
-                    <li><a href="#">Register</a></li>}
-              <li><a href="@Url.Action("RegisterProduct", "RegisterProduct")">Register yours product</a></li>
-              <li><a href="@Url.Action("Products", "RegisterProduct")">My products</a></li>
-              <li><a href="#">Tech support request</a></li>
-              <li><a href="#">Product troubleshutter</a></li>
-              <li><a href="#">Request for a refund</a></li>
-            </ul>
-          </li>
-
-          <!-- languages -->
-          <li class="drop-down">
-            <a href="">Languages</a>
-            <ul>
-              <li><a href="#">English</a></li>
-              <li><a href="#">Czech</a></li>
-              <li><a href="#">Russian</a></li>
-              <li><a href="#">Ukrainian</a></li>
-            </ul>
-          </li>
-
-          <li class="get-started"><a href="#about">Get Started</a></li>
-        </ul>
-      </nav><!-- .nav-menu -->
-
+    <div class="logo mr-auto">
+      <h1 class="text-light"><a href="@Url.Action("Index", "Home")"><span>Union Distribution</span></a></h1>
+      <!-- Uncomment below if you prefer to use an image logo -->
+      <!-- <a href="index.html"><img src="assets/img/logo.png" alt="" class="img-fluid"></a>-->
     </div>
-  </header><!-- End Header -->
 
-  <div class="container">
-    <main role="main" class="pb-3 main-wrapper">
-      @RenderBody()
-    </main>
+    <nav class="nav-menu d-none d-lg-block">
+      <ul>
+        <li class="active"><a href="@Url.Action("Index", "Home")">Home</a></li>
+        <li><a href="@Url.Action("AboutUs", "Home")">About Us</a></li>
+        <li><a href="@Url.Action("Contacts", "Home")">Contact Us</a></li>
+        <li><a href="@Url.Action("Index", "Services")">Services</a></li>
+
+        <!-- user main -->
+        <li class="drop-down">
+          <a href="">Profile</a>
+          <ul>
+            @if (SignInManager.IsSignedIn(User))
+            {
+              <li><a href="#">Logout</a></li>
+            }
+            else
+            {
+              <li><a asp-area="Identity" asp-page="/Account/Login">Login</a></li>
+              <li><a href="#">Register</a></li>
+            }
+            <li><a href="@Url.Action("RegisterProduct", "RegisterProduct")">Register yours product</a></li>
+            <li><a href="@Url.Action("Products", "RegisterProduct")">My products</a></li>
+            <li><a href="#">Tech support request</a></li>
+            <li><a href="#">Product troubleshutter</a></li>
+            <li><a href="#">Request for a refund</a></li>
+          </ul>
+        </li>
+
+        <!-- languages -->
+        <li class="drop-down">
+          <a href="">Languages</a>
+          <ul>
+            <li><a href="#">English</a></li>
+            <li><a href="#">Czech</a></li>
+            <li><a href="#">Russian</a></li>
+            <li><a href="#">Ukrainian</a></li>
+          </ul>
+        </li>
+
+        <li class="get-started"><a href="#about">Get Started</a></li>
+      </ul>
+    </nav><!-- .nav-menu -->
+
   </div>
+</header><!-- End Header -->
 
-  <footer id="footer">
+<div class="container">
+  <main role="main" class="pb-3 main-wrapper">
+    @RenderBody()
+  </main>
+</div>
+
+<footer id="footer">
   <!--
   <div class="footer-newsletter" data-aos="fade-up">
     <div class="container">
@@ -135,73 +136,73 @@
   </div>
   -->
 
-    <div class="footer-top">
-      <div class="container">
-        <div class="row">
+  <div class="footer-top">
+    <div class="container">
+      <div class="row">
 
-          <div class="col-lg-3 col-md-6 footer-contact" data-aos="fade-up" data-aos-delay="100">
-            <h3>Union Distribution</h3>
-            <p>
-              Dělnická 213/12<br>
-              170 00 Praha 7-Holešovice<br>
-              Czech Republic<br><br>
-              <strong>Phone:</strong> +420 602 868 228<br>
-              <strong>Email:</strong> info@uniondistribution.eu<br>
-            </p>
-          </div>
-
-          <div class="col-lg-3 col-md-6 footer-links" data-aos="fade-up" data-aos-delay="200">
-            <h4>Useful Links</h4>
-            <ul>
-              <li><i class="bx bx-chevron-right"></i> <a href="@Url.Action("Index", "Home")">Home</a></li>
-              <li><i class="bx bx-chevron-right"></i> <a href="@Url.Action("AboutUs", "Home")">About us</a></li>
-              <li><i class="bx bx-chevron-right"></i> <a href="#">Services</a></li>
-              <li><i class="bx bx-chevron-right"></i> <a href="#">Terms of service</a></li>
-              <li><i class="bx bx-chevron-right"></i> <a href="#">Privacy policy</a></li>
-            </ul>
-          </div>
-
-          <div class="col-lg-3 col-md-6 footer-links" data-aos="fade-up" data-aos-delay="300">
-            <h4>Our Services</h4>
-            <ul>
-              <li><i class="bx bx-chevron-right"></i> <a href="#">Web Design</a></li>
-              <li><i class="bx bx-chevron-right"></i> <a href="#">Web Development</a></li>
-              <li><i class="bx bx-chevron-right"></i> <a href="#">Product Management</a></li>
-              <li><i class="bx bx-chevron-right"></i> <a href="#">Marketing</a></li>
-              <li><i class="bx bx-chevron-right"></i> <a href="#">Graphic Design</a></li>
-            </ul>
-          </div>
-
-          <div class="col-lg-3 col-md-6 footer-links" data-aos="fade-up" data-aos-delay="400">
-            <h4>Our Social Networks</h4>
-            <p>Cras fermentum odio eu feugiat lide par naso tierra videa magna derita valies</p>
-            <div class="social-links mt-3">
-              <a href="#" class="twitter"><i class="bx bxl-twitter"></i></a>
-              <a href="#" class="facebook"><i class="bx bxl-facebook"></i></a>
-              <a href="#" class="instagram"><i class="bx bxl-instagram"></i></a>
-              <a href="#" class="google-plus"><i class="bx bxl-skype"></i></a>
-              <a href="#" class="linkedin"><i class="bx bxl-linkedin"></i></a>
-            </div>
-          </div>
-
+        <div class="col-lg-3 col-md-6 footer-contact" data-aos="fade-up" data-aos-delay="100">
+          <h3>Union Distribution</h3>
+          <p>
+            Dělnická 213/12<br>
+            170 00 Praha 7-Holešovice<br>
+            Czech Republic<br><br>
+            <strong>Phone:</strong> +420 602 868 228<br>
+            <strong>Email:</strong> info@uniondistribution.eu<br>
+          </p>
         </div>
+
+        <div class="col-lg-3 col-md-6 footer-links" data-aos="fade-up" data-aos-delay="200">
+          <h4>Useful Links</h4>
+          <ul>
+            <li><i class="bx bx-chevron-right"></i> <a href="@Url.Action("Index", "Home")">Home</a></li>
+            <li><i class="bx bx-chevron-right"></i> <a href="@Url.Action("AboutUs", "Home")">About us</a></li>
+            <li><i class="bx bx-chevron-right"></i> <a href="#">Services</a></li>
+            <li><i class="bx bx-chevron-right"></i> <a href="#">Terms of service</a></li>
+            <li><i class="bx bx-chevron-right"></i> <a href="#">Privacy policy</a></li>
+          </ul>
+        </div>
+
+        <div class="col-lg-3 col-md-6 footer-links" data-aos="fade-up" data-aos-delay="300">
+          <h4>Our Services</h4>
+          <ul>
+            <li><i class="bx bx-chevron-right"></i> <a href="#">Web Design</a></li>
+            <li><i class="bx bx-chevron-right"></i> <a href="#">Web Development</a></li>
+            <li><i class="bx bx-chevron-right"></i> <a href="#">Product Management</a></li>
+            <li><i class="bx bx-chevron-right"></i> <a href="#">Marketing</a></li>
+            <li><i class="bx bx-chevron-right"></i> <a href="#">Graphic Design</a></li>
+          </ul>
+        </div>
+
+        <div class="col-lg-3 col-md-6 footer-links" data-aos="fade-up" data-aos-delay="400">
+          <h4>Our Social Networks</h4>
+          <p>Cras fermentum odio eu feugiat lide par naso tierra videa magna derita valies</p>
+          <div class="social-links mt-3">
+            <a href="#" class="twitter"><i class="bx bxl-twitter"></i></a>
+            <a href="#" class="facebook"><i class="bx bxl-facebook"></i></a>
+            <a href="#" class="instagram"><i class="bx bxl-instagram"></i></a>
+            <a href="#" class="google-plus"><i class="bx bxl-skype"></i></a>
+            <a href="#" class="linkedin"><i class="bx bxl-linkedin"></i></a>
+          </div>
+        </div>
+
       </div>
     </div>
+  </div>
 
-    <div class="container py-4">
-      <div class="copyright">
-        &copy; Copyright <strong><span>Union Distribution</span></strong>. All Rights Reserved
-      </div>
+  <div class="container py-4">
+    <div class="copyright">
+      &copy; Copyright <strong><span>Union Distribution</span></strong>. All Rights Reserved
     </div>
+  </div>
 
-  </footer><!-- End Footer -->
-  <!-- Vendor JS Files -->
-  <!--
-    <script src="~/lib/jquery/dist/jquery.min.js"></script>
-    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="assets/vendor/jquery/jquery.min.js"></script>
-    <script src="assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
-    -->
+</footer><!-- End Footer -->
+<!-- Vendor JS Files -->
+<!--
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
+<script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+<script src="assets/vendor/jquery/jquery.min.js"></script>
+<script src="assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+-->
   <script src="~/assets/vendor/jquery.easing/jquery.easing.min.js"></script>
   <script src="~/assets/vendor/php-email-form/validate.js"></script>
   <script src="~/assets/vendor/isotope-layout/isotope.pkgd.min.js"></script>
@@ -213,6 +214,9 @@
   <script src="~/assets/js/main.js"></script>
 
   <script src="~/js/site.js" asp-append-version="true"></script>
+  <partial name="/Views/Shared/_ValidationScriptsPartial.cshtml" />
   @RenderSection("Scripts", required: false)
+
 </body>
+
 </html>

@@ -1,6 +1,4 @@
-﻿using System.Globalization;
-
-namespace UdssCli
+﻿namespace UdssCli
 {
   using System;
 
@@ -33,8 +31,8 @@ namespace UdssCli
     // идентификатор нового адреса
     public static readonly Guid AddressIdNew = new Guid("6DBC942B-D57C-4D12-9DB9-0A2D6E5AC6BE");
 
-    public const int LCID_Polska = 21;
-    public const string ShortDatePattern_Polska = "dd.MM.yyyy";
+    public const int LCID_Polish = 21;
+    public const string ShortDatePattern_Polish = "dd.MM.yyyy";
 
     public static string UiCulture()
     {

@@ -39,9 +39,9 @@
       // и формат ГГГГ-ММ-ДД электронном обороте. Net для польской культуры ожидает ГГГГ-ММ-ДД, а из Telerik приходит ДД.ММ.ГГГГ
       // поэтому делаем изменение ShortDatePattern для польской культуры
       CultureInfo culture = new CultureInfo(Thread.CurrentThread.CurrentUICulture.LCID);
-      if (culture.LCID == Defines.LCID_Polska)
+      if (culture.LCID == Defines.LCID_Polish)
       {
-        culture.DateTimeFormat.ShortDatePattern = Defines.ShortDatePattern_Polska;
+        culture.DateTimeFormat.ShortDatePattern = Defines.ShortDatePattern_Polish;
       }
 
       if (string.IsNullOrWhiteSpace(testValue))

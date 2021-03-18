@@ -1,36 +1,25 @@
-using UdssCli.Areas.Identity.Data;
-using UdssCli.Data;
-using UdssCli.Models;
-
 namespace UdssCli
 {
+  using System;
+  using System.Diagnostics;
+  using Microsoft.AspNetCore.Authentication.Cookies;
   using Microsoft.AspNetCore.Builder;
   using Microsoft.AspNetCore.Hosting;
-  using Microsoft.AspNetCore.HttpsPolicy;
-  using Microsoft.AspNetCore.Localization;
-  using Microsoft.AspNetCore.Authentication.Cookies;
+  using Microsoft.AspNetCore.Http;
+  using Microsoft.AspNetCore.Identity;
   using Microsoft.AspNetCore.Mvc.Localization;
+  using Microsoft.EntityFrameworkCore;
+  using Microsoft.Extensions.Configuration;
   using Microsoft.Extensions.DependencyInjection;
   using Microsoft.Extensions.Hosting;
   using Microsoft.Extensions.Localization;
-  using Microsoft.AspNetCore.Identity;
-  using Microsoft.EntityFrameworkCore;
-  using Microsoft.AspNetCore.Mvc.NewtonsoftJson;
-  using System;
-  using System.Collections.Generic;
-  using System.Globalization;
-  using System.Linq;
-  using System.Threading.Tasks;
   using Newtonsoft.Json.Serialization;
-  using Westwind.Globalization;
-  using Westwind.Globalization.AspnetCore;
-  using Microsoft.Extensions.Configuration;
   using Serilog;
-  using System.Diagnostics;
-  using Microsoft.AspNetCore.Identity;
-  using Microsoft.EntityFrameworkCore;
-  using Microsoft.AspNetCore.Http;
+  using UdssCli.Areas.Identity.Data;
+  using UdssCli.Data;
   using UdssCli.Infrastructure;
+  using UdssCli.Models;
+  using Westwind.Globalization.AspnetCore;
 
   public class Startup
   {
@@ -195,17 +184,7 @@ namespace UdssCli
       app.UseAuthentication();
       app.UseAuthorization();
 
-      app.UseEndpoints(endpoints =>
-      {
-        endpoints.MapControllerRoute(
-                  name: "default",
-                  pattern: "{controller=Home}/{action=Index}/{id?}");
-        endpoints.MapRazorPages();
-      });
-
-      app.UseMyMiddleware();
-
-      // поддерживаемые языки
+      // поддерживаемые языки, распологать здесь, не перемещать
       const string defaultCultureValue = "ru-RU";
       string[] supportedCultures =
       {
@@ -226,6 +205,17 @@ namespace UdssCli
         .AddSupportedUICultures(supportedCultures);
 
       app.UseRequestLocalization(localizationOptions);
+      // окончание настройки культур
+
+      app.UseEndpoints(endpoints =>
+      {
+        endpoints.MapControllerRoute(
+                  name: "default",
+                  pattern: "{controller=Home}/{action=Index}/{id?}");
+        endpoints.MapRazorPages();
+      });
+
+      app.UseMyMiddleware();
     }
   }
 }

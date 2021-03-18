@@ -44,10 +44,10 @@
                 <div class="k-edit-field">
                   @Html.Kendo().TextBoxFor(m => m.Serial).HtmlAttributes(new { style = "width:80%" })
                   @(Html.Kendo().Button()
-                    .Name("btnSerialCheck")
-                    .Content(@DbRes.T("btnSerialCheck_Text", @resourceSet))
-                    .HtmlAttributes(new { style = "width:15%" })
-                    .Events(e => e.Click("serial_check")))
+                  .Name("btnSerialCheck")
+                  .Content(@DbRes.T("btnSerialCheck_Text", @resourceSet))
+                  .HtmlAttributes(new { style = "width:15%" })
+                  .Events(e => e.Click("serial_check")))
                 </div>
 
                 <div class="k-edit-label">
@@ -83,15 +83,15 @@
                 </div>
                 <div class="k-edit-field">
                   @(Html.Kendo().DatePickerFor(m => m.DatePurchase)
-                    .DateInput(true))
+                  .DateInput(true))
                 </div>
 
                 <div class="k-edit-field">
                   @(Html.Kendo().Button()
-                    .Name("btnSubmit")
-                    .Content(@DbRes.T("btnSubmit_Text", @resourceSet))
-                    .HtmlAttributes(new {type = "submit"})
-                    )
+                  .Name("btnSubmit")
+                  .Content(@DbRes.T("btnSubmit_Text", @resourceSet))
+                  .HtmlAttributes(new {type = "submit"})
+                  )
                 </div>
               </div>
             </div>
@@ -100,6 +100,7 @@
       </div>
     </div>
   </section>
+</form>
 
   <!-- модальное окно выбора изделия в случае одного sn у нескольких изделий -->
   @(Html.Kendo().Window()
@@ -142,13 +143,11 @@
   .Modal(true)
   .Width(900)
   .Height(480))
-
-</form>
+  
 
 <script type="text/javascript">
 
   $(document).ready(function () {
-    console.log("ready");
     const boxBrandName = $('#BrandName').data("@KendoHelper.TextBox");
     boxBrandName.readonly(true);
     const boxEquipmentType = $('#EquipmentTypeName').data("@KendoHelper.TextBox");
@@ -158,7 +157,6 @@
     const boxModel = $('#Model').data("@KendoHelper.TextBox");
     boxModel.readonly(true);
   });
-
 
   function error_handler(e) {
     if (e.errors) {
