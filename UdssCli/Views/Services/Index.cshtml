@@ -1,0 +1,165 @@
+﻿@using Kendo.Mvc.UI;
+@using Westwind.Globalization
+
+@{
+  ViewData["Title"] = "Services";
+  Layout = "~/Views/Shared/_Layout.cshtml";
+  var resourceSet = "cli:Services";
+}
+
+<link rel="stylesheet" href="~/css/services.css" />
+
+@Html.Hidden("countryCode")
+
+<div class="serviceSelector">
+
+  @(Html.Kendo().DropDownList()
+  .Name("ddlCountries")
+  .OptionLabel(@DbRes.T("ddlCountries_OptionLabel", @resourceSet))
+  .DataTextField("Text")
+  .DataValueField("Value")
+  .DataSource(ds =>
+  {
+    ds.Read(rd => rd.Action("CountriesList", "DataHelper").Data("getCountryCode"));
+  }))
+
+  @(Html.Kendo().DropDownList()
+    .Name("ddlBrands")
+    .OptionLabel(@DbRes.T("ddlBrands_OptionLabel", @resourceSet))
+    .DataTextField("Text")
+    .DataValueField("Value")
+    .DataSource(ds =>
+    {
+      ds.Read(rd => { rd.Action("BrandList", "DataHelper"); });
+    })
+  .Events(
+      e=>e.Change("brandChanged")
+    )
+    )
+  @(Html.Kendo().DropDownList()
+  .Name("ddlEquipmentTypes")
+  .OptionLabel(@DbRes.T("ddlEquipmentTypes_OptionLabel", @resourceSet))
+  .DataTextField("Text")
+  .DataValueField("Value")
+  .HtmlAttributes("width: 240 px;")
+  .DataSource(ds =>
+  {
+    ds.Read(rd => { rd.Action("EquipmentTypesList4Brand", "DataHelper").Data("brandIdGet"); });
+  })
+  //.Enable(false)
+  .AutoBind(false)
+    //.CascadeFrom("ddlBrands"))
+    )
+  @(Html.Kendo().Button()
+  .Name("btnServicesList")
+  .Content(@DbRes.T("btnDisplay_Text", @resourceSet))
+    .Events(e => e.Click("displayServicesList")))
+</div>
+
+<!-- заголовки полей -->
+<div class="sl-list-header align-middle mt-4">
+  <div class="row my-2">
+    <div class="col-2 col-header">@DbRes.T("Country_Text", @resourceSet)</div>
+    <div class="col-3 col-header">@DbRes.T("Company_Text", @resourceSet)</div>
+    <div class="col-4 col-header">@DbRes.T("Address_Text", @resourceSet)</div>
+    <div class="col-2 col-header">@DbRes.T("Phone_Text", @resourceSet)</div>
+    <div class="col-1">@DbRes.T("Website_Text", @resourceSet)</div>
+  </div>
+
+  @(Html.Kendo().ListView<ServiceData>()
+    .Name("serviceList")
+    .TagName("div")
+    .ClientTemplateId("template")
+    .DataSource(ds => ds
+      .Ajax()
+      .PageSize(10)
+      .Read(read => read.Action("ServiceListRead", "Services").Data("getCountryCode"))
+    )
+    .Pageable()
+    )
+</div>
+
+<script type="text/x-kendo-tmpl" id="template2">
+  <div class="product-view k-widget">
+      <dl>
+          <dt>Country</dt>
+          <dd>#:CountryName#</dd>
+          <dt>Company Name</dt>
+          <dd>#:CompanyName#</dd>
+          <dt>Address</dt>
+          <dd>#:Address#</dd>
+      </dl>
+      <div class="edit-buttons">
+          <a class="k-button k-edit-button" href="\\#"><span class="k-icon k-i-edit"></span></a>
+          <a class="k-button k-delete-button" href="\\#"><span class="k-icon k-i-delete"></span></a>
+      </div>
+  </div>
+</script>
+
+<script type="text/x-kendo-tmpl" id="template">
+  <div class="row my-2">
+    <div class="col-2">#:CountryName#</div>
+    <div class="col-3">#:CompanyName#</div>
+    <div class="col-4">#:Address#</div>
+    <div class="col-2">#:Phone#</div>
+    <div class="col-1">#:Website#</div>
+  </div>
+</script>
+
+
+<script type="text/javascript">
+
+  /*
+  $(function () {
+    //  get country code by ip-address
+    $.get("https://api.ipdata.co/country_name?api-key=dbcdcaf6c8e5091c480aa3a4140950a160fe07532b8765ccebd91c67", function (countryCode) {
+      console.log(countryCode);
+      if (countryCode == null) return;
+      $("#countryCode").val(countryCode);
+      $("#ddlCountries").data("kendoDropDownList").search(countryCode);
+
+        /*
+        //const ctrl = $("#ddlCountries").data("kendoDropDownList");
+        var exists = 0 != $('#ddlCountries option[value=' + countryCode + ']').length;
+        console.log('ex', exists);
+        if (exists == 1) {
+          $("#ddlCountries").val(countryCode);
+        }
+      }, "text");
+  });
+  */
+
+  function brandIdGet() {
+    const brandId = $("#ddlBrands").val();
+    return {
+      brandId: brandId
+    };
+  }
+
+  function brandChanged(e) {
+    const ctrl = $("#ddlEquipmentTypes").data("kendoDropDownList");
+
+    if (e.sender.value() === "") {
+      ctrl.enable(false);
+    }
+    else {
+      ctrl.enable(true);
+      ctrl.dataSource.read();
+    }
+  }
+
+  function getCountryCode() {
+    const countryCode = $("#ddlCountries").val();
+    console.log("countryCode", countryCode);
+    return {
+      countryCode: countryCode
+    };
+  }
+
+  function displayServicesList() {
+    alert("Display services");
+    var view = $("#serviceList").data("@KendoHelper.ListView");
+    view.dataSource.read();
+  }
+
+</script>

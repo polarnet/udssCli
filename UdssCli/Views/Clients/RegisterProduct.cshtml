@@ -1,0 +1,272 @@
+﻿@model RegisterProductData
+@using Westwind.Globalization
+@using Kendo.Mvc.UI
+@{
+  var resourceSet = "cli:RegisterProduct";
+  ViewData["Title"] = @DbRes.T("Page_Title", @resourceSet);
+  Layout = "~/Views/Shared/_Layout.cshtml";
+  const string products = "products";
+  const string gridSerials = "gridSerials";
+  const string wndSerials = "wndSerials";
+}
+
+<link rel="stylesheet" href="~/css/register_product.css" />
+
+<style>
+  .k-icon.form-control-feedback {
+    position: absolute;
+    width: 29px;
+    height: 36px;
+  }
+</style>
+
+<!-- ======= Register yours product Section ======= -->
+<form method="post" id="registerProduct" action='@Url.Action("RegisterProduct_Submit", "RegisterProduct")' kendo-validator="true">
+  <section id="register_product_section" class="contact">
+    <div class="container">
+
+      <div class="section-title" data-aos="fade-up">
+        <h2>@DbRes.T("Header1_Text", @resourceSet)</h2>
+        <p>@DbRes.T("Header2_Text", @resourceSet)</p>
+      </div>
+
+      <div class="row justify-content-center">
+        <div class="col-lg-5 d-flex align-items-stretch" data-aos="fade-up" data-aos-delay="200">
+          <div class="info">
+            <div class="form-row">
+
+              @Html.ValidationSummary(false, string.Empty, new { @class = "text-danger" })
+
+              <div class="tabsheet">
+                <div class="k-edit-label">
+                  @Html.LabelFor(m => m.Serial)
+                </div>
+                <div class="k-edit-field">
+                  @Html.Kendo().TextBoxFor(m => m.Serial).HtmlAttributes(new { style = "width:80%" })
+                  @(Html.Kendo().Button()
+                    .Name("btnSerialCheck")
+                    .Content(@DbRes.T("btnSerialCheck_Text", @resourceSet))
+                    .HtmlAttributes(new { style = "width:15%" })
+                    .Events(e => e.Click("serial_check")))
+                </div>
+
+                <div class="k-edit-label">
+                  @Html.LabelFor(m => m.BrandName)
+                </div>
+                <div class="k-edit-field">
+                  @Html.Kendo().TextBoxFor(m => m.BrandName)
+                </div>
+
+                <div class="k-edit-label">
+                  @Html.LabelFor(m => m.EquipmentTypeName)
+                </div>
+                <div class="k-edit-field">
+                  @Html.Kendo().TextBoxFor(m => m.EquipmentTypeName)
+                </div>
+
+                <div class="k-edit-label">
+                  @Html.LabelFor(m => m.EquipmentSubtypeName)
+                </div>
+                <div class="k-edit-field">
+                  @Html.Kendo().TextBoxFor(m => m.EquipmentSubtypeName)
+                </div>
+
+                <div class="k-edit-label">
+                  @Html.LabelFor(m => m.Model)
+                </div>
+                <div class="k-edit-field">
+                  @Html.Kendo().TextBoxFor(m => m.Model)
+                </div>
+
+                <div class="k-edit-label">
+                  @Html.LabelFor(m => m.DatePurchase)
+                </div>
+                <div class="k-edit-field">
+                  @(Html.Kendo().DatePickerFor(m => m.DatePurchase)
+                    .DateInput(true))
+                </div>
+
+                <div class="k-edit-field">
+                  @(Html.Kendo().Button()
+                    .Name("btnSubmit")
+                    .Content(@DbRes.T("btnSubmit_Text", @resourceSet))
+                    .HtmlAttributes(new {type = "submit"})
+                    )
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- модальное окно выбора изделия в случае одного sn у нескольких изделий -->
+  @(Html.Kendo().Window()
+  .Name(wndSerials)
+  .Title("Products")
+  .Content(
+    @<text>
+      @(Html.Kendo().Grid<SerialData>()
+        .Name(@gridSerials)
+        .HtmlAttributes(new {style = "width: 100%; height: 350px;"})
+        .Columns(columns =>
+        {
+          columns.Bound(d => d.BrandName).Width(140);
+          columns.Bound(d => d.Model).Width(140);
+          columns.Bound(d => d.EquipmentTypeName).Width(140);
+          columns.Bound(d => d.EquipmentSubtypeName).Width(140);
+          // кнопка Принять
+          columns.Command(command => command.Custom("Set").Click("serial_multy_set")).Width(60).HtmlAttributes(new { @class = "alc" });
+        })
+        .Pageable()
+        .Navigatable()
+        .Scrollable()
+        .Selectable(sl => sl.Enabled(true).Mode(GridSelectionMode.Single).Type(GridSelectionType.Row))
+        .DataSource(dataSource => dataSource
+          .Ajax()
+          .Batch(false)
+          .PageSize(20)
+          .ServerOperation(false)
+          .AutoSync(true)
+          .Events(events => events.Error("error_handler"))
+          .Read(read => read.Action("SerialDataMulty", "DataHelper").Data("serial_get"))
+        ))
+     </text>)
+  .Visible(false)
+  .Draggable()
+  .Resizable()
+  .Events(e=>e
+    .Open("serial_multy_read")
+  )
+  .Modal(true)
+  .Width(900)
+  .Height(480))
+
+</form>
+
+<script type="text/javascript">
+
+  $(document).ready(function () {
+    console.log("ready");
+    const boxBrandName = $('#BrandName').data("@KendoHelper.TextBox");
+    boxBrandName.readonly(true);
+    const boxEquipmentType = $('#EquipmentTypeName').data("@KendoHelper.TextBox");
+    boxEquipmentType.readonly(true);
+    const boxEquipmentSubtype = $('#EquipmentSubtypeName').data("@KendoHelper.TextBox");
+    boxEquipmentSubtype.readonly(true);
+    const boxModel = $('#Model').data("@KendoHelper.TextBox");
+    boxModel.readonly(true);
+  });
+
+
+  function error_handler(e) {
+    if (e.errors) {
+      var message = "";
+      $.each(e.errors, function (key, value) {
+        if ('errors' in value) {
+          $.each(value.errors, function () {
+            message += this + "\n";
+          });
+        }
+      });
+      kendo.alert(message);
+    }
+  }
+
+  function serial_get() {
+    var sn = $("#Serial").val().trim().toUpperCase();
+    if (sn.length === 0) {
+      sn = "";
+    }
+
+    return {
+      serial: sn
+    }
+  }
+
+  // проверка SN
+  function serial_check(e) {
+    e.preventDefault();
+
+    const sn = $("#Serial").val().trim().toUpperCase();
+    if (sn.length === 0) {
+      kendo.alert("Serial no required");
+      return;
+    }
+
+    // проверка SN - однозначный или мульти
+    const url = '@Url.Action("SerialQtyGet", "DataHelper")';
+    $.getJSON(
+      url,
+      { serial: sn },
+      function(data) {
+        var qty = data.qty;
+        if (qty === 1) {
+          // однозначный, подставляем
+          serial_single_set(sn);
+          return;
+        } else if (qty > 0) {
+          //  мульти, выбор из списка
+          serial_chooser(sn);
+          return;
+        } else {
+          kendo.alert("Serial not found.");
+          return;
+        }
+      }
+    );
+    return;
+  }
+
+  // получаем данные по однозначному SN и заполняем поля
+  function serial_single_set(sn) {
+    const url = '@Url.Action("SerialDataSingle", "DataHelper")';
+    $.getJSON(
+      url,
+      { serial: sn },
+      function(data) {
+        if (data.Error !== 0) {
+          kendo.alert(data.ErrorMessage);
+          return;
+        };
+
+        kendo.alert("Valid.");
+        console.log(data);
+        $('#BrandName').data("@KendoHelper.TextBox").value(data.BrandName);
+        $('#EquipmentTypeName').data("@KendoHelper.TextBox").value(data.EquipmentTypeName);
+        $('#EquipmentSubtypeName').data("@KendoHelper.TextBox").value(data.EquipmentSubtypeName);
+        $('#Model').data("@KendoHelper.TextBox").value(data.Model);
+      }
+    );
+  }
+
+  // запуск окна выбора устройства из списка (в случае не уникального sn)
+  function serial_chooser() {
+    var wnd = $("#wndSerials").data("@KendoHelper.DataWindow");
+    wnd.center().open();
+  }
+
+  // заполнение по выбранному в сетке устройству
+  function serial_multy_set(e) {
+    e.preventDefault();
+
+    var row = $(e.target).closest("tr");
+    var grid = $("#@gridSerials").data("@KendoHelper.DataGrid");
+    var data = grid.dataItem(row);
+
+    $("#BrandName").val(data.BrandName);
+    $("#EquipmentTypeName").val(data.EquipmentTypeName);
+    $("#EquipmentSubtypeName").val(data.EquipmentSubtypeName);
+    $("#Model").val(data.Model);
+
+    var wnd = $("#wndSerials").data("@KendoHelper.DataWindow");
+    wnd.close();
+  }
+
+  function serial_multy_read() {
+    var grid = $("#@gridSerials").data("@KendoHelper.DataGrid");
+    grid.dataSource.read();
+  }
+
+</script>

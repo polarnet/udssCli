@@ -1,5 +1,13 @@
 ﻿@using Westwind.Globalization
 @using Westwind.Globalization.AspNetCore.Extensions
+@using Microsoft.AspNetCore.Identity
+@using UdssCli.Areas.Identity.Data
+@inject SignInManager<ApplicationUser> SignInManager
+@inject UserManager<ApplicationUser> UserManager
+
+@{
+  var culture = Defines.UiCulture();
+}
 
 <!DOCTYPE html>
 <html lang="en">
@@ -21,6 +29,9 @@
 
   <!-- Vendor CSS Files -->
   <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+  <link rel="stylesheet" href="~/css/kendo.common.min.css">
+  <link rel="stylesheet" href="~/css/kendo.bootstrap-v4.min.css" type="text/css" />
+
   <!-- <link href="assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet"> -->
   <link href="~/assets/vendor/icofont/icofont.min.css" rel="stylesheet">
   <link href="~/assets/vendor/boxicons/css/boxicons.min.css" rel="stylesheet">
@@ -32,6 +43,19 @@
   <link href="~/assets/css/style.css" rel="stylesheet">
 
   <link rel="stylesheet" href="~/css/site.css" />
+
+  <!-- JS files -->
+  <script src="@Url.Content("~/lib/kendo/jquery.min.js")"></script>
+  <script src="@Url.Content("~/lib/kendo/jszip.min.js")"></script>
+  <script src="@Url.Content("~/lib/bootstrap/dist/js/bootstrap.bundle.min.js")"></script>
+  <script src="@Url.Content("~/lib/kendo/kendo.all.min.js")"></script>
+  <script src="@Url.Content("~/lib/kendo/kendo.aspnetmvc.min.js")"></script>
+  <script src="@Url.Content("~/lib/kendo/cultures/kendo.culture." + @culture + ".min.js")"></script>
+
+  <script type="text/javascript">
+    kendo.culture("@culture");
+  </script>
+
 </head>
 <body>
   <!-- ======= Header ======= -->
@@ -49,13 +73,21 @@
           <li class="active"><a href="@Url.Action("Index", "Home")">Home</a></li>
           <li><a href="@Url.Action("AboutUs", "Home")">About Us</a></li>
           <li><a href="@Url.Action("Contacts", "Home")">Contact Us</a></li>
-          <li><a href="#services">Services</a></li>
+          <li><a href="@Url.Action("Index", "Services")">Services</a></li>
+          
+          <!-- user main -->
           <li class="drop-down">
             <a href="">Profile</a>
             <ul>
-              <li><a href="#">Login</a></li>
-              <li><a href="#">Register</a></li>
-              <li><a href="#">Register yours product</a></li>
+              @if (SignInManager.IsSignedIn(User))
+              {
+            <li><a href="#">Logout</a></li> }
+                  else
+                  {
+            <li><a asp-area="Identity" asp-page="/Account/Login">Login</a></li>
+                    <li><a href="#">Register</a></li>}
+              <li><a href="@Url.Action("RegisterProduct", "RegisterProduct")">Register yours product</a></li>
+              <li><a href="@Url.Action("Products", "RegisterProduct")">My products</a></li>
               <li><a href="#">Tech support request</a></li>
               <li><a href="#">Product troubleshutter</a></li>
               <li><a href="#">Request for a refund</a></li>
@@ -81,26 +113,27 @@
   </header><!-- End Header -->
 
   <div class="container">
-    <main role="main" class="pb-3">
+    <main role="main" class="pb-3 main-wrapper">
       @RenderBody()
     </main>
   </div>
 
   <footer id="footer">
-
-    <div class="footer-newsletter" data-aos="fade-up">
-      <div class="container">
-        <div class="row justify-content-center">
-          <div class="col-lg-6">
-            <h4>Join Our Newsletter</h4>
-            <p>Tamen quem nulla quae legam multos aute sint culpa legam noster magna</p>
-            <form action="" method="post">
-              <input type="email" name="email"><input type="submit" value="Subscribe">
-            </form>
-          </div>
+  <!--
+  <div class="footer-newsletter" data-aos="fade-up">
+    <div class="container">
+      <div class="row justify-content-center">
+        <div class="col-lg-6">
+          <h4>Join Our Newsletter</h4>
+          <p>Tamen quem nulla quae legam multos aute sint culpa legam noster magna</p>
+          <form action="" method="post">
+            <input type="email" name="email"><input type="submit" value="Subscribe">
+          </form>
         </div>
       </div>
     </div>
+  </div>
+  -->
 
     <div class="footer-top">
       <div class="container">
@@ -163,12 +196,12 @@
 
   </footer><!-- End Footer -->
   <!-- Vendor JS Files -->
-  <script src="~/lib/jquery/dist/jquery.min.js"></script>
-  <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
   <!--
-  <script src="assets/vendor/jquery/jquery.min.js"></script>
-  <script src="assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
-  -->
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="assets/vendor/jquery/jquery.min.js"></script>
+    <script src="assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+    -->
   <script src="~/assets/vendor/jquery.easing/jquery.easing.min.js"></script>
   <script src="~/assets/vendor/php-email-form/validate.js"></script>
   <script src="~/assets/vendor/isotope-layout/isotope.pkgd.min.js"></script>

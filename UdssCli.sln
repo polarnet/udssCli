@@ -10,6 +10,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		.editorconfig = .editorconfig
 	EndProjectSection
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Westwind.Globalization", "Westwind.Globalization\Westwind.Globalization.csproj", "{5E37FE82-55C1-409F-B95B-97948D690FCB}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Westwind.Globalization.AspnetCore", "Westwind.Globalization.AspnetCore\Westwind.Globalization.AspnetCore.csproj", "{8D2AB1CF-C201-453D-8117-8A4C4DFFED78}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -20,6 +24,14 @@ Global
 		{643223B6-6AA4-484B-9A8A-77E0CB68B79B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{643223B6-6AA4-484B-9A8A-77E0CB68B79B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{643223B6-6AA4-484B-9A8A-77E0CB68B79B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5E37FE82-55C1-409F-B95B-97948D690FCB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5E37FE82-55C1-409F-B95B-97948D690FCB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5E37FE82-55C1-409F-B95B-97948D690FCB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5E37FE82-55C1-409F-B95B-97948D690FCB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8D2AB1CF-C201-453D-8117-8A4C4DFFED78}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8D2AB1CF-C201-453D-8117-8A4C4DFFED78}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8D2AB1CF-C201-453D-8117-8A4C4DFFED78}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8D2AB1CF-C201-453D-8117-8A4C4DFFED78}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

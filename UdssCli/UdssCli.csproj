@@ -5,6 +5,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Areas\Identity\IdentityHostingStartup.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Folder Include="Infrastructure\Localization\" />
     <Folder Include="wwwroot\assets\" />
   </ItemGroup>
@@ -15,9 +19,17 @@
 
   <ItemGroup>
     <PackageReference Include="Dapper" Version="2.0.78" />
-    <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="3.1.11" />
-    <PackageReference Include="Microsoft.Data.SqlClient" Version="2.1.1" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="3.1.11" />
+    <PackageReference Include="HtmlSanitizer" Version="5.0.376" />
+    <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="3.1.12" />
+    <PackageReference Include="Microsoft.AspNetCore.Identity.UI" Version="3.1.12" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="3.1.12" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="3.1.12" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="3.1.12" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="3.1.12">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="3.1.4" />
     <PackageReference Include="Serilog.AspNetCore" Version="3.4.0" />
     <PackageReference Include="Serilog.Exceptions" Version="6.0.0" />
     <PackageReference Include="Serilog.Extensions.Logging" Version="3.0.1" />
@@ -30,18 +42,14 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
+    <PackageReference Include="System.Data.OleDb" Version="4.6.0" />
+    <PackageReference Include="System.Data.SqlClient" Version="4.6.1" />
+    <PackageReference Include="Telerik.UI.for.AspNet.Core" Version="2021.1.119" />
   </ItemGroup>
 
   <ItemGroup>
-    <Reference Include="Westwind.Globalization">
-      <HintPath>..\..\..\Temp\Westwind.Globalization-master\src\NetCore\Westwind.Globalization.AspnetCore\bin\Debug\netcoreapp3.1\Westwind.Globalization.dll</HintPath>
-    </Reference>
-    <Reference Include="Westwind.Globalization.AspnetCore">
-      <HintPath>..\..\..\Temp\Westwind.Globalization-master\src\NetCore\Westwind.Globalization.AspnetCore\bin\Debug\netcoreapp3.1\Westwind.Globalization.AspnetCore.dll</HintPath>
-    </Reference>
-    <Reference Include="Westwind.Utilities">
-      <HintPath>..\..\..\Temp\Westwind.Globalization-master\src\NetCore\Westwind.Globalization.AspnetCore\bin\Debug\netcoreapp3.1\Westwind.Utilities.dll</HintPath>
-    </Reference>
+    <ProjectReference Include="..\Westwind.Globalization.AspnetCore\Westwind.Globalization.AspnetCore.csproj" />
+    <ProjectReference Include="..\Westwind.Globalization\Westwind.Globalization.csproj" />
   </ItemGroup>
 
 </Project>

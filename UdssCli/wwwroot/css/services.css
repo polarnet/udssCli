@@ -1,0 +1,16 @@
+﻿.serviceSelector {
+  
+}
+
+#serviceList {
+  border: none;
+}
+
+.sl-list-header {
+  background-color: #fef8f5;
+}
+
+.col-header {
+  display: flex;
+  align-items: center;
+}

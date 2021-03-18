@@ -1,3 +1,7 @@
+using UdssCli.Areas.Identity.Data;
+using UdssCli.Data;
+using UdssCli.Models;
+
 namespace UdssCli
 {
   using Microsoft.AspNetCore.Builder;
@@ -24,7 +28,9 @@ namespace UdssCli
   using Serilog;
   using System.Diagnostics;
   using Microsoft.AspNetCore.Identity;
+  using Microsoft.EntityFrameworkCore;
   using Microsoft.AspNetCore.Http;
+  using UdssCli.Infrastructure;
 
   public class Startup
   {
@@ -52,6 +58,7 @@ namespace UdssCli
     public void ConfigureServices(IServiceCollection services)
     {
       var connStr = this.Configuration.GetConnectionString(DbHelper.DbName);
+      var connStrIdentity = this.Configuration.GetConnectionString(DbHelper.DbNameIdentity);
       DbHelper.SetConnectionString(connStr);
 
       // временами NewtonSoft JSON formatter работает в синхронном режим, а инфраструктура по умолчанию требует асинхронный
@@ -62,11 +69,11 @@ namespace UdssCli
         options.AllowSynchronousIO = true;
       });
 
-      //  services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(connStr));
+      services.AddDbContext<UdssCliDbContext>(options => options.UseSqlServer(connStrIdentity));
 
-      services.AddDefaultIdentity<IdentityUser>(options => { options.SignIn.RequireConfirmedAccount = true; })
+      services.AddDefaultIdentity<ApplicationUser>(options => { options.SignIn.RequireConfirmedAccount = true; })
         .AddRoles<IdentityRole>()
-        .AddEntityFrameworkStores<ApplicationDbContext>();
+        .AddEntityFrameworkStores<UdssCliDbContext>();
 
       // для DI в контроллеры
       services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
@@ -112,10 +119,7 @@ namespace UdssCli
       // Make sure this is done FIRST!
       services.AddLocalization(options =>
       {
-        // I prefer Properties over the default `Resources` folder
-        // due to namespace issues if you have a Resources type as
-        // most people do for shared resources.
-        options.ResourcesPath = "Properties";
+        options.ResourcesPath = "Resources";
       });
 
       // Replace StringLocalizers with Db Resource Implementation
@@ -158,9 +162,11 @@ namespace UdssCli
       });
 
       services.AddRazorPages();
+      services.AddKendo();
 
       // репозитории приложения для DI
-      //  services.AddTransient<ICurrencyRepository, CurrencyRepository>(provider => new CurrencyRepository(connStr));
+      services.AddTransient<IDataHelperRepo, DataHelperRepo>(provider => new DataHelperRepo(connStr));
+      services.AddTransient<IServicesRepo, ServicesRepo>(provider => new ServicesRepo(connStr));
     }
 
     // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -183,9 +189,10 @@ namespace UdssCli
       // app.UseStatusCodePages(HttpDefines.ContentText, "Error. Status code : {0}");
       app.UseStatusCodePagesWithRedirects("~/Error?code={0}");
 
-      app.UseHttpsRedirection();
+      // app.UseHttpsRedirection();
       app.UseStaticFiles();
       app.UseRouting();
+      app.UseAuthentication();
       app.UseAuthorization();
 
       app.UseEndpoints(endpoints =>
@@ -193,13 +200,13 @@ namespace UdssCli
         endpoints.MapControllerRoute(
                   name: "default",
                   pattern: "{controller=Home}/{action=Index}/{id?}");
+        endpoints.MapRazorPages();
       });
 
       app.UseMyMiddleware();
 
-      const string defaultCultureValue = "ru-RU";
-
       // поддерживаемые языки
+      const string defaultCultureValue = "ru-RU";
       string[] supportedCultures =
       {
         "ru", defaultCultureValue,    // русский

@@ -1,4 +1,7 @@
-﻿namespace UdssCli
+﻿using Dapper;
+using UdssCli.Infrastructure;
+
+namespace UdssCli
 {
   using System;
   using System.Collections.Generic;
@@ -8,7 +11,8 @@
 
   public static class DbHelper
   {
-    public const string DbName = "udssClientDb";
+    public const string DbName = "UdssCliDb";
+    public const string DbNameIdentity = "UdssCliDbUsers";
     public const string SetOfGuidTypeName = "dbo.SetOfGuid";
 
     private static string m_connStr;
@@ -57,6 +61,39 @@
       }
 
       return dt;
+    }
+
+    public static bool ContactsEMailRegister(
+      string authorName,
+      string authorEmail,
+      string emailSubject,
+      string emailMessage,
+      out string errorMessage)
+    {
+      const string cmdText = "cli.ContactsEmailAdd";
+
+      var db = DbConnection();
+      var cmd = db.CreateCommand();
+      cmd.CommandType = CommandType.StoredProcedure;
+      cmd.CommandText = cmdText;
+      cmd.Parameters.AddWithValue("@AuthorName", authorName);
+      cmd.Parameters.AddWithValue("AuthorEmail", authorEmail);
+      cmd.Parameters.AddWithValue("EmailSubject", emailSubject);
+      cmd.Parameters.AddWithValue("EmailMessage", emailMessage);
+      var prmErrMsg = cmd.AddErrorMessageParam();
+      var prmRc = cmd.AddRetvalParam();
+      db.Open();
+      cmd.ExecuteNonQuery();
+      var rc = (int)prmRc.Value;
+      if (rc != 0)
+      {
+        var errMsg = (SqlString)prmErrMsg.Value;
+        errorMessage = $"Send e-mail error: {(!errMsg.IsNull ? errMsg.Value : string.Empty)}";
+        return false;
+      }
+
+      errorMessage = null;
+      return true;
     }
   }
 }

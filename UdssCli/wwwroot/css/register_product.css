@@ -1,0 +1,22 @@
+﻿.tabsheet {
+  width: 600px;
+  height: 500px;
+}
+
+#products {
+  padding: 10px 5px;
+  margin-top: 10px;
+  margin-bottom: -1px;
+  /*min-height: 510px;*/
+  /* Avoid cutout if font or line is bigger */
+  font: inherit;
+}
+
+.product_info {
+  float: left;
+  position: relative;
+  width: 111px;
+  height: 170px;
+  margin: 0 5px;
+  padding: 0;
+}

@@ -4,6 +4,7 @@ using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Xml;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
@@ -14,6 +15,7 @@ using Westwind.Globalization.AspNetCore.Extensions;
 using Westwind.Globalization.Errors;
 using Westwind.Globalization.Utilities;
 using Westwind.Utilities;
+using Formatting = Newtonsoft.Json.Formatting;
 
 namespace Westwind.Globalization.Administration
 {
@@ -28,7 +30,7 @@ namespace Westwind.Globalization.Administration
         public const string STR_RESOURCESET = "LocalizationForm";
 
         protected DbResourceDataManager Manager;
-        protected Formatting EnsureJsonNet = Formatting.Indented;
+        protected Formatting EnsureJsonNet = Newtonsoft.Json.Formatting.Indented;
 
         protected IWebHostEnvironment Host;
 
