@@ -2,6 +2,7 @@
 using Kendo.Mvc.UI;
 using Microsoft.AspNetCore.Authorization;
 using UdssCli.Models;
+using Westwind.Globalization;
 
 namespace UdssCli.Controllers
 {
@@ -16,12 +17,13 @@ namespace UdssCli.Controllers
   [Authorize(Roles = "User")]
   public class RegisterProductController : Controller
   {
-    private const string viewRegisterProduct = "~/Views/Clients/RegisterProduct.cshtml";
+    private const string ResourceSet = "cli_RegisterProduct";
+    private const string ViewRegisterProduct = "~/Views/Clients/RegisterProduct.cshtml";
 
     public IActionResult RegisterProduct()
     {
       ViewBag.ServerError = false;
-      return View(viewRegisterProduct);
+      return View(ViewRegisterProduct);
     }
 
     [HttpPost]
@@ -29,16 +31,16 @@ namespace UdssCli.Controllers
     {
       if (!ModelState.IsValid)
       {
-        ViewBag.ServerError = true;
-        return View(viewRegisterProduct, data);
+        return View(ViewRegisterProduct, data);
       }
 
       if (data == null)
       {
-        ViewBag.ServerError = true;
-        ModelState.AddModelError(string.Empty, "Register data not found");
-        return View(viewRegisterProduct);
+        ModelState.AddModelError(string.Empty, @DbRes.T("DeviceDataNotFound_Msg", ResourceSet));
+        return View(ViewRegisterProduct);
       }
+
+
 
       return Ok();
     }

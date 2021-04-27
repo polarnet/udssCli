@@ -14,7 +14,7 @@ namespace UdssCli.Controllers
 
   public class HomeController : Controller
   {
-    private const string ResourceSet = "cli:Home/Contacts";
+    private const string ResourceSet = "cli_Contacts";
     private const string ViewNameSuccess = "~/Views/Home/Success.cshtml";
 
     private readonly ILogger<HomeController> m_logger;
